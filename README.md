@@ -17,3 +17,6 @@ Follow the prompts until completion.
 
 
 
+## Screenshots
+
+http://i.imgur.com/VMZ3Qsd.png
