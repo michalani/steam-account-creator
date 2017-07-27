@@ -22,24 +22,62 @@ client.on('loggedOn', function(details) {
   createAccount();
 });
 
-user.on('loggedOn', function(details) {
+/*user.on('loggedOn', function(details) {
   console.log('>> Logged onto new account.');
   user.webLogOn();
   verifyEmail();
-});
+});*/
 
 user.on('webSession', function(sessionID, cookies) {
   cookieArray = cookies;
 });
 
+function makeId(length) {
+  var text = "";
+  var letters = "abcdefghijklmnopqrstuvwxyz";
+  var uppercase_letters  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var numbers = "0123456789";
+  
+  //uppercase and number
+  text += uppercase_letters.charAt(Math.floor(Math.random() * uppercase_letters.length));
+  text += numbers.charAt(Math.floor(Math.random() * numbers.length));
+  //the rest of the letters != uppercase
+  for (var i = 0; i < length - 2; i++)
+    text += letters.charAt(Math.floor(Math.random() * letters.length));
+
+  return text;
+}
+
+function editFile() {
+var f='combo.txt',
+    fs=require('fs');
+
+/*fs.writeFile(f,"Username" + ":" + "Password\n",function(err){
+  if(err)
+    console.error(err);
+  console.log('Written!');
+});*/
+
+fs.appendFile(f,"\n"+username +":"+password,function(err){
+  if(err)
+    console.error(err);
+  console.log(username +' logged to file!');
+  //initClient();
+  purify();
+});
+}
+
 function createAccount() {
-  username = readlineSync.question('Username: ');
-  password = readlineSync.question('Password: ');
+  //username = readlineSync.question('Username: ');
+  username = makeId(25);
+  //password = readlineSync.question('Password: ');
+  password = makeId(25);
   var email = readlineSync.question('Email: ');
   client.createAccount(username, password, email, function (result) {
     if (result == SteamUser.Steam.EResult.OK) {
       console.log('>> Account created successfully.');
-      initClient();
+      editFile();
+      //initClient();
     } else if (result == SteamUser.Steam.EResult.DuplicateName) {
       console.log('>> There is already an account with the username ' + username + '. Please reload the application.');
       process.exit(1);
@@ -53,16 +91,22 @@ function createAccount() {
   });
 }
 
-function initClient() {
+function purify(){
+
+  createAccount();
+
+}
+
+/*function initClient() {
   client.logOff();
   client = null;
   user.logOn({
     'accountName': username,
     'password': password
   });
-}
+}*/
 
-function verifyEmail() {
+/*function verifyEmail() {
   console.log('>> Please complete verification by email sent by Steam.');
   user.requestValidationEmail(function(result) {
     if (result == SteamUser.Steam.EResult.OK) {
@@ -119,4 +163,4 @@ function verifyPhone() {
 function enableTwoFactor() {
   console.log('>> In order to enable two-factor authentication, please run the 2fa_enable node file.');
   process.exit(1);
-}
+}*/
