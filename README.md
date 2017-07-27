@@ -19,4 +19,4 @@ Follow the prompts until completion.
 
 ## Screenshots
 
-http://i.imgur.com/VMZ3Qsd.png
+<img width="100%" alt="screen" src="http://i.imgur.com/VMZ3Qsd.png">
